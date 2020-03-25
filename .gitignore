@@ -111,3 +111,6 @@ htmlcov/
 dist/
 build/
 *.egg-info/
+
+# Sqlite DEV Database
+*.sqlite
