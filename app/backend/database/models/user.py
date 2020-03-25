@@ -1,8 +1,8 @@
 # coding=utf-8
 
 from datetime import datetime
-from backend.app.config import GLOBAL_DATETIME_FORMAT
-from backend.app.database.db import db
+
+from backend.database import db
 
 
 class User(db.Model):

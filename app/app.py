@@ -2,11 +2,11 @@
 
 import os
 
-import click
-from flask_migrate import Migrate, upgrade
-from backend.app.database.db import db
-from backend.app import create_app
-from backend.app.database.models.user import User
+from flask_migrate import Migrate
+
+from backend.database import db
+from backend.database.models.user import User
+from backend.web import create_app
 
 app = create_app(os.getenv('FLASK_CONFIG', 'default'))
 migrate = Migrate(app, db)
@@ -19,5 +19,6 @@ def make_shell_context():
 
 
 if __name__ == '__main__':
-	db.create_all()
+	with app.app_context():
+		db.create_all()
 	app.run(host='0.0.0.0', port=7000)

@@ -30,7 +30,7 @@ class DevelopmentConfig(Config):
 
 	# Database
 	basedir = os.path.dirname(__file__)
-	databasedir = os.path.abspath(os.path.join(basedir, 'database'))
+	databasedir = os.path.abspath(os.path.join(basedir, 'backend\database'))
 	SQLALCHEMY_DATABASE_URI = f"sqlite:///{os.path.join(databasedir, 'fmp-dev.sqlite')}"
 
 

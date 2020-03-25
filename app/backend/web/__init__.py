@@ -1,11 +1,9 @@
-# Fix to werkzeug reloader
-# from os import environ, getcwd
-# environ['PYTHONPATH'] = getcwd()
+# coding=utf-8
 
 from flask import Flask
 
-from backend.app.config import config_dict
-from backend.app.database.db import db
+from backend.database import db
+from config import config_dict
 
 
 def create_app(config_name=None):
