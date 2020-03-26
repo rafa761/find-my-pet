@@ -23,7 +23,7 @@ class Users(Resource):
 	@api.expect(user_post_serializer)
 	@api.marshal_with(user_response_serializer, code=201)
 	def post(self):
-		return self.bus.save(api.payload)
+		return self.bus.add(api.payload)
 
 
 @ns_user.route('/<username>')
@@ -35,3 +35,6 @@ class User(Resource):
 	@api.marshal_with(user_get_serializer)
 	def get(self, username):
 		return self.bus.get(username=username)
+
+	def delete(self, username):
+		return self.bus.delete(username=username)

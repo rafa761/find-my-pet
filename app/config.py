@@ -5,7 +5,6 @@ import os
 # Constants
 GLOBAL_DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
-
 class Config:
 	# Flask
 	SECRET_KEY = os.getenv('SECRET_KEY', '5swZQ71F1KtT!nJgC&MavSW4AOUeHljKOxKsXW6r0WD86$RrZ$')

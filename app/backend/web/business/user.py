@@ -5,8 +5,9 @@ from backend.database.models.user import User
 
 
 class UserBus(object):
-	def save(self, payload):
+	def add(self, payload):
 		user = User(**payload)
+
 
 		db.session.add(user)
 		db.session.commit()
@@ -14,10 +15,15 @@ class UserBus(object):
 		return user
 
 	def delete(self, username):
-		user = User.query.filter_by(username=username)
+		user = User.query.filter_by(username=username).first()
 
-		db.session.remove(user)
-		db.session.commit()
+		try:
+			db.session.delete(user)
+			db.session.commit()
+
+		except:
+			db.session.rollback()
+			return False
 
 		return True
 
@@ -25,5 +31,5 @@ class UserBus(object):
 		if len(kwargs) > 0:
 			return User.query.filter_by(**kwargs).first()
 
-		# if do not received any filter params
+		# if do not received any filter parameter
 		return User.query.all()
