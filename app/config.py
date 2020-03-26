@@ -9,7 +9,9 @@ GLOBAL_DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 class Config:
 	# Flask
 	SECRET_KEY = os.getenv('SECRET_KEY', '5swZQ71F1KtT!nJgC&MavSW4AOUeHljKOxKsXW6r0WD86$RrZ$')
-	FLASK_DEBUG = False
+	FLASK_ENV = os.getenv('FLASK_ENV', 'development')
+	DEBUG = False
+	TESTING = False
 	RESTPLUS_VALIDATE = True
 	ERROR_404_HELP = False
 	FLASK_RUN_PORT = int(os.getenv('FLASK_RUN_PORT', 7000))
@@ -26,7 +28,8 @@ class Config:
 
 
 class DevelopmentConfig(Config):
-	FLASK_DEBUG = True
+	# Flask
+	DEBUG = True
 
 	# Database
 	basedir = os.path.dirname(__file__)
@@ -35,7 +38,9 @@ class DevelopmentConfig(Config):
 
 
 class TestingConfig(Config):
-	FLASK_DEBUG = True
+	# Flask
+	TESTING = True
+	DEBUG = True
 
 	# Database
 	SQLALCHEMY_DATABASE_URI = 'sqlite://'
@@ -54,9 +59,9 @@ class ProductionConfig(Config):
 
 # Dict to instantiate config classes
 config_dict = {
-	'dev': DevelopmentConfig,
-	'test': TestingConfig,
-	'prod': ProductionConfig,
+	'development': DevelopmentConfig,
+	'testing': TestingConfig,
+	'production': ProductionConfig,
 
 	'default': DevelopmentConfig
 }

@@ -9,10 +9,10 @@ class User(db.Model):
 	__tablename__ = 'users'
 	id = db.Column(db.Integer, primary_key=True)
 	username = db.Column(db.String(30), unique=True, index=True)
+	# password
 	email = db.Column(db.String(60), unique=True, index=True)
 	first_name = db.Column(db.String(30))
 	last_name = db.Column(db.String(60))
-	# password
 	date_added = db.Column(db.DateTime(), default=datetime.utcnow())
 	date_modified = db.Column(db.DateTime())
 
