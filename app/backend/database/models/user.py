@@ -10,6 +10,7 @@ from backend.database import db
 class User(db.Model):
 	## Definitions
 	__tablename__ = 'users'
+	__table_args__ = {'extend_existing': True}
 
 	# Integer
 	id = db.Column(db.Integer, primary_key=True)

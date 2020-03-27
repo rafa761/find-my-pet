@@ -4,9 +4,9 @@ import os
 
 from flask_migrate import Migrate
 
-from backend.database import db
-from backend.database.models.user import User
-from backend.web import create_app
+from app.backend.database import db
+from app.backend.database.models.user import User
+from app.backend.web import create_app
 
 app = create_app(os.getenv('FLASK_CONFIG', 'default'))
 migrate = Migrate(app, db)
