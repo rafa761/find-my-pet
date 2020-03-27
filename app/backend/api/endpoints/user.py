@@ -2,10 +2,10 @@
 
 from flask_restplus import Resource
 
-from backend.api.restplus import api
-from backend.api.serializers.user import user_get_serializer, user_post_serializer, user_response_serializer
+from app.backend.api.restplus import api
+from app.backend.api.serializers.user import user_get_serializer, user_post_serializer, user_response_serializer
 
-from backend.web.business.user import UserBus
+from app.backend.web.business.user import UserBus
 
 ns_user = api.namespace('users', description='Users operations and registry')
 

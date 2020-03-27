@@ -1,7 +1,7 @@
 # coding=utf-8
 
-from backend.database import db
-from backend.database.models.user import User
+from app.backend.database import db
+from app.backend.database.models.user import User
 
 
 class UserBus(object):

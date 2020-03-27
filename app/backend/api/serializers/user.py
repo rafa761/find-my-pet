@@ -2,8 +2,8 @@
 
 from flask_restplus import fields
 
-from backend.api.restplus import api
-from backend.api.serializers import custom_fields
+from app.backend.api.restplus import api
+from app.backend.api.serializers import custom_fields
 
 user_base_serializer = {
 	'id': fields.Integer(required=False, description='User unique ID'),

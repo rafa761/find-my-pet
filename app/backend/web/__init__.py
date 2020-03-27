@@ -6,8 +6,8 @@ werkzeug.cached_property = werkzeug.utils.cached_property
 
 from flask import Flask
 
-from backend.database import db
-from config import config_dict
+from app.backend.database import db
+from app.config import config_dict
 
 
 def create_app(config_name=None):
@@ -23,7 +23,7 @@ def create_app(config_name=None):
 
 	## Register the BLueprints
 	# API RESTful
-	from backend.api import api_blueprint
+	from app.backend.api import api_blueprint
 	app.register_blueprint(api_blueprint)
 
 	return app
