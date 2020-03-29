@@ -6,7 +6,7 @@ from flask_security import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from app.backend.database import db
-from app.backend.database.models.role import user_roles_table, Role
+from app.backend.database.models.role import user_role_table, Role
 
 
 class User(UserMixin, db.Model):
@@ -35,7 +35,7 @@ class User(UserMixin, db.Model):
 
 	# Relationships
 	roles = db.relationship(
-		Role, secondary=user_roles_table, backref=db.backref('user', lazy='dynamic')
+		Role, secondary=user_role_table, backref=db.backref('user', lazy='dynamic')
 	)
 
 	## Properties

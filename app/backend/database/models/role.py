@@ -6,8 +6,8 @@ from flask_security import RoleMixin
 
 from app.backend.database import db
 
-user_roles_table = db.Table(
-	'user_roles',
+user_role_table = db.Table(
+	'user_role',
 	db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
 	db.Column('role_id', db.Integer(), db.ForeignKey('role.id')),
 )

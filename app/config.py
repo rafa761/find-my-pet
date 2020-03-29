@@ -25,11 +25,8 @@ class Config:
 
 	# Third Party Auth
 	# Google Auth
-	GOOGLE_OAUTH_CLIENT_ID = os.getenv('GOOGLE_OAUTH_CLIENT_ID',
-	                                   '46995395977-v6o8uo17vn3skoapndfra198487t9jfd.apps.googleusercontent.com')
-	GOOGLE_OAUTH_CLIENT_SECRET = os.getenv('GOOGLE_OAUTH_CLIENT_SECRET', 'MT1P7CC9CzFcznP-1m3IXKVc')
-	OAUTHLIB_RELAX_TOKEN_SCOPE = True
-	OAUTHLIB_INSECURE_TRANSPORT = True
+	GOOGLE_OAUTH_CLIENT_ID = os.getenv('GOOGLE_OAUTH_CLIENT_ID')
+	GOOGLE_OAUTH_CLIENT_SECRET = os.getenv('GOOGLE_OAUTH_CLIENT_SECRET')
 
 	@staticmethod
 	def init_app(app):
