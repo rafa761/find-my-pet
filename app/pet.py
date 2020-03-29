@@ -7,9 +7,10 @@ from flask_migrate import Migrate
 from app.backend.database import db
 from app.backend.database.models.user import User
 from app.backend.web import create_app
+from app.config import MIGRATION_DIR
 
 app = create_app(os.getenv('FLASK_CONFIG', 'default'))
-migrate = Migrate(app, db)
+migrate = Migrate(app, db, directory=MIGRATION_DIR)
 
 
 @app.shell_context_processor
