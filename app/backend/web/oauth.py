@@ -43,8 +43,6 @@ def google_logged_in(oauth_blueprint, token):
 
 	if oauth.user:
 		login_user(oauth.user)
-		flash('Successfuly signed in.')
-
 	else:
 		# Create a new local user account for this user
 		# TODO: Check how to define a default to the required fields
@@ -64,7 +62,7 @@ def google_logged_in(oauth_blueprint, token):
 
 		# Log in the new local user account
 		login_user(user)
-		flash('Successfuly signed in.')
+	flash('Successfuly signed in.')
 
 	# Disable Flask-Dance's default behavior for savinf the OAuth token
 	return False
