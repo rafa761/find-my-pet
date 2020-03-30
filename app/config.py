@@ -1,10 +1,11 @@
 # coding=utf-8
 
 import os
+from pathlib import Path
 
 ## Constants
 GLOBAL_DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
-MIGRATION_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__) , 'backend\database\migrations'))
+MIGRATION_DIR = Path(__file__).parent.joinpath('backend\database\migrations')
 
 
 class Config:
@@ -38,8 +39,7 @@ class DevelopmentConfig(Config):
 	DEBUG = True
 
 	# Database
-	basedir = os.path.dirname(__file__)
-	databasedir = os.path.abspath(os.path.join(basedir, 'backend\database'))
+	databasedir = Path(__file__).parent.joinpath('backend\database')
 	SQLALCHEMY_DATABASE_URI = f"sqlite:///{os.path.join(databasedir, 'fmp-dev.sqlite')}"
 
 
