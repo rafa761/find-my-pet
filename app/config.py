@@ -1,9 +1,12 @@
 # coding=utf-8
 
 import os
+from pathlib import Path
 
-# Constants
+## Constants
 GLOBAL_DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+MIGRATION_DIR = Path(__file__).parent.joinpath('backend\database\migrations')
+
 
 class Config:
 	# Flask
@@ -21,6 +24,11 @@ class Config:
 	# Database
 	SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
 
+	# Third Party Auth
+	# Google Auth
+	GOOGLE_OAUTH_CLIENT_ID = os.getenv('GOOGLE_OAUTH_CLIENT_ID')
+	GOOGLE_OAUTH_CLIENT_SECRET = os.getenv('GOOGLE_OAUTH_CLIENT_SECRET')
+
 	@staticmethod
 	def init_app(app):
 		pass
@@ -31,8 +39,7 @@ class DevelopmentConfig(Config):
 	DEBUG = True
 
 	# Database
-	basedir = os.path.dirname(__file__)
-	databasedir = os.path.abspath(os.path.join(basedir, 'backend\database'))
+	databasedir = Path(__file__).parent.joinpath('backend\database')
 	SQLALCHEMY_DATABASE_URI = f"sqlite:///{os.path.join(databasedir, 'fmp-dev.sqlite')}"
 
 

@@ -114,3 +114,7 @@ build/
 
 # Sqlite DEV Database
 *.sqlite
+
+# Env File
+!/.env
+/.env

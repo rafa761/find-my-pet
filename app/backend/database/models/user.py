@@ -2,14 +2,16 @@
 
 from datetime import datetime
 
+from flask_security import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from app.backend.database import db
+from app.backend.database.models.role import user_role_table, Role
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
 	## Definitions
-	__tablename__ = 'users'
+	__tablename__ = 'user'
 	__table_args__ = {'extend_existing': True}
 
 	# Integer
@@ -29,6 +31,12 @@ class User(db.Model):
 	# DateTime
 	date_added = db.Column(db.DateTime(), default=datetime.utcnow())
 	date_modified = db.Column(db.DateTime())
+	date_confirmed = db.Column(db.DateTime())
+
+	# Relationships
+	roles = db.relationship(
+		Role, secondary=user_role_table, backref=db.backref('user', lazy='dynamic')
+	)
 
 	## Properties
 	@property
