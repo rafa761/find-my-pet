@@ -8,7 +8,6 @@ class UserBus(object):
 	def add(self, payload):
 		user = User(**payload)
 
-
 		db.session.add(user)
 		db.session.commit()
 
@@ -17,8 +16,11 @@ class UserBus(object):
 	def delete(self, username):
 		user = User.query.filter_by(username=username).first()
 
+		# When a user is deleted, we don't delete from the database, but just set as deleted
 		try:
-			db.session.delete(user)
+			user.is_active = False
+			user.is_deleted = True
+			db.session.add(user)
 			db.session.commit()
 
 		except:

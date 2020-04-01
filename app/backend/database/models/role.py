@@ -25,7 +25,7 @@ class Role(db.Model, RoleMixin):
 	description = db.Column(db.String(255))
 
 	# DateTime
-	date_added = db.Column(db.DateTime(), default=datetime.utcnow())
+	date_created = db.Column(db.DateTime(), default=datetime.utcnow())
 	date_modified = db.Column(db.DateTime())
 
 	## Triggers

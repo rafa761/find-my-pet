@@ -10,7 +10,7 @@ from app.backend.database.models.role import user_role_table, Role
 
 
 class User(UserMixin, db.Model):
-	## Definitions
+	## Definition
 	__tablename__ = 'user'
 	__table_args__ = {'extend_existing': True}
 
@@ -24,19 +24,28 @@ class User(UserMixin, db.Model):
 	first_name = db.Column(db.String(60))
 	last_name = db.Column(db.String(60))
 
+	# Text
+	info = db.Column(db.Text())
+
 	# Boolean
 	is_active = db.Column(db.Boolean(), default=True)
 	is_admin = db.Column(db.Boolean(), default=False)
+	is_deleted = db.Column(db.Boolean(), default=False)
 
 	# DateTime
-	date_added = db.Column(db.DateTime(), default=datetime.utcnow())
+	date_created = db.Column(db.DateTime(), default=datetime.utcnow())
 	date_modified = db.Column(db.DateTime())
+	date_deleted = db.Column(db.DateTime())
 	date_confirmed = db.Column(db.DateTime())
 
-	# Relationships
+	# Relationship
 	roles = db.relationship(
 		Role, secondary=user_role_table, backref=db.backref('user', lazy='dynamic')
 	)
+
+	## Triggers
+	# TODO: create on change to update date_modified when any field updated.
+	# TODO: create on change is_deleted to update the date_deleted to uctnow
 
 	## Properties
 	@property
@@ -46,9 +55,6 @@ class User(UserMixin, db.Model):
 	@password.setter
 	def password(self, password):
 		self.password_hash = generate_password_hash(password)
-
-	## Triggers
-	# TODO: create on change to update date_modified when any field updated.
 
 	## Several Methods
 	def verify_password(self, password):

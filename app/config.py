@@ -48,6 +48,9 @@ class TestingConfig(Config):
 	TESTING = True
 	DEBUG = True
 
+	# Flask Forms
+	WTF_CSRF_ENABLED = False
+
 	# Database
 	SQLALCHEMY_DATABASE_URI = 'sqlite://'
 

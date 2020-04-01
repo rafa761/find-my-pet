@@ -3,11 +3,11 @@
 from flask_restplus import Resource
 
 from app.backend.api.restplus import api
-from app.backend.api.serializers.user import user_get_serializer, user_post_serializer, user_response_serializer
+from app.backend.api.serializers.user import user_get_serializer, user_post_serializer
 
 from app.backend.web.business.user import UserBus
 
-ns_user = api.namespace('users', description='Users operations and registry')
+ns_user = api.namespace('user', description='Users operations and registry')
 
 
 @ns_user.route('/')
@@ -21,7 +21,7 @@ class Users(Resource):
 		return self.bus.get()
 
 	@api.expect(user_post_serializer)
-	@api.marshal_with(user_response_serializer, code=201)
+	@api.marshal_with(user_get_serializer, code=201)
 	def post(self):
 		return self.bus.add(api.payload)
 
