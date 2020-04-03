@@ -20,9 +20,8 @@ class UserBus(object):
 		if not user:
 			return
 
-		# Update user object with incoming payload
-		fields_filter_list = [x for x in payload.keys()]
-		for field in user.get_self_attributes(attr_filter=fields_filter_list):
+		# Update object with incoming payload
+		for field in user.get_self_attributes(attr_filter=payload.keys()):
 			setattr(user, field, payload.get(field))
 
 		# Add to the database
@@ -33,13 +32,12 @@ class UserBus(object):
 
 	def delete(self, username):
 		# Get from database
-		user = User.query.filter_by(username=username).first()
+		user = self.get(username=username)
 		if not user:
 			return False
 
 		try:
-			# When a user is deleted, we don't delete from the database, but just set as deleted
-			user.is_active = False
+			# When deleting, we don't delete from the database, but just set as deleted
 			user.is_deleted = True
 
 			# Add to the database

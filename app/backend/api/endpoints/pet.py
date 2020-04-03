@@ -25,7 +25,7 @@ class Pets(Resource):
 		return self.bus.add(api.payload)
 
 
-@ns_pet.route('/<id>')
+@ns_pet.route('/<int:id>', methods=('GET', 'POST', 'PUT', 'DELETE'))
 class Pet(Resource):
 	def __init__(self, api=None, *args, **kwargs):
 		super(Pet, self).__init__(api, *args, **kwargs)

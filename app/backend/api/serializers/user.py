@@ -34,21 +34,6 @@ user_base_serializer = {
 
 user_get_serializer = api.model('UserGet', {**user_base_serializer})
 
-# user_get_serializer = api.model('UserGet', {
-# 	'id': user_base_serializer['id'],
-# 	'username': user_base_serializer['username'],
-# 	'email': user_base_serializer['email'],
-# 	'first_name': user_base_serializer['first_name'],
-# 	'last_name': user_base_serializer['last_name'],
-# 	'info': user_base_serializer['info'],
-# 	'is_active': user_base_serializer['is_active'],
-# 	'is_admin': user_base_serializer['is_admin'],
-# 	'is_deleted': user_base_serializer['is_deleted'],
-# 	'date_created': user_base_serializer['date_created'],
-# 	'date_modified': user_base_serializer['date_modified'],
-# 	'date_deleted': user_base_serializer['date_deleted']
-# })
-
 user_post_serializer = api.model('UserPost', {
 	'username': user_base_serializer['username'],
 	'password': user_base_serializer['password'],

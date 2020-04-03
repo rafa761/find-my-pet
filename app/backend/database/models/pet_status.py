@@ -2,10 +2,13 @@
 
 from datetime import datetime
 
+from flask_sqlalchemy import event
+
 from app.backend.database import db
+from app.backend.database.models.base import Base
 
 
-class PetStatus(db.Model):
+class PetStatus(db.Model, Base):
 	# Definition
 	__tablename__ = 'pet_status'
 	__table_args__ = {'extend_existing': True}
@@ -23,8 +26,21 @@ class PetStatus(db.Model):
 
 	# DateTime
 	date_created = db.Column(db.DateTime(), default=datetime.utcnow())
-	date_modified = db.Column(db.DateTime())
+	date_modified = db.Column(db.DateTime(), onupdate=datetime.utcnow())
 	date_deleted = db.Column(db.DateTime())
 
-	# Trigger
-	# TODO: Create event to update date_modified and date_deleted
+	## Magic Methods Override
+	def __repr__(self):
+		return f'<id {self.id}, description {self.description}>'
+
+
+# Event Listeners
+@event.listens_for(PetStatus.is_deleted, 'set')
+def on_changed_is_deleted(target, value, oldvalue, initiator):
+	""" Listen for is_deleted changes and update date_deleted """
+
+	target.date_deleted = None
+	# If is deleting
+	if oldvalue == False and value == True:
+		target.is_active = False
+		target.date_deleted = datetime.utcnow()

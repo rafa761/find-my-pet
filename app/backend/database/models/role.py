@@ -3,6 +3,7 @@
 from datetime import datetime
 
 from flask_security import RoleMixin
+from flask_sqlalchemy import event
 
 from app.backend.database import db
 
@@ -24,9 +25,26 @@ class Role(db.Model, RoleMixin):
 	name = db.Column(db.String(80), unique=True)
 	description = db.Column(db.String(255))
 
+	# Text
+	info = db.Column(db.Text())
+
+	# Boolean
+	is_active = db.Column(db.Boolean(), default=True)
+	is_deleted = db.Column(db.Boolean(), default=False)
+
 	# DateTime
 	date_created = db.Column(db.DateTime(), default=datetime.utcnow())
-	date_modified = db.Column(db.DateTime())
+	date_modified = db.Column(db.DateTime(), onupdate=datetime.utcnow())
+	date_deleted = db.Column(db.DateTime())
 
-	## Triggers
-	# TODO: create on change to update date_modified when any field updated.
+
+# Event Listeners
+@event.listens_for(Role.is_deleted, 'set')
+def on_changed_is_deleted(target, value, oldvalue, initiator):
+	""" Listen for is_deleted changes and update date_deleted """
+
+	target.date_deleted = None
+	# If is deleting
+	if oldvalue == False and value == True:
+		target.is_active = False
+		target.date_deleted = datetime.utcnow()

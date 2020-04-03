@@ -20,8 +20,7 @@ class PetBus(object):
 			return
 
 		# Update pet object with incoming payload
-		fields_filter_list = [x for x in payload.keys()]
-		for field in pet.get_self_attributes(attr_filter=fields_filter_list):
+		for field in pet.get_self_attributes(attr_filter=payload.keys()):
 			setattr(pet, field, payload.get(field))
 
 		# Add to the database
@@ -31,14 +30,15 @@ class PetBus(object):
 		return self.get(id=id)
 
 	def delete(self, id):
-		pet = Pet.query.filter_by(id=id).first()
+		pet = self.get(id=id)
 		if not pet:
 			return False
 
-		# When a pet is deleted, we don't delete from the database, but just set as deleted
+		# When deleting, we don't delete from the database, but just set as deleted
 		try:
-			pet.is_active = False
 			pet.is_deleted = True
+
+			# Add to the database
 			db.session.add(pet)
 			db.session.commit()
 

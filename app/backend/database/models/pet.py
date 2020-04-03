@@ -2,6 +2,8 @@
 
 from datetime import datetime
 
+from flask_sqlalchemy import event
+
 from app.backend.database import db
 from app.backend.database.models.base import Base
 
@@ -38,6 +40,14 @@ class Pet(db.Model, Base):
 
 # Relationship
 
-## Triggers
-# TODO: create on change to update date_modified when any field updated.
-# TODO: create on change is_deleted to update the date_deleted to uctnow
+
+# Event Listeners
+@event.listens_for(Pet.is_deleted, 'set')
+def on_changed_is_deleted(target, value, oldvalue, initiator):
+	""" Listen for is_deleted changes and update date_deleted """
+
+	target.date_deleted = None
+	# If is deleting
+	if oldvalue == False and value == True:
+		target.is_active = False
+		target.date_deleted = datetime.utcnow()

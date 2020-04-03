@@ -26,7 +26,7 @@ class Users(Resource):
 		return self.bus.add(api.payload)
 
 
-@ns_user.route('/<username>', methods=('GET', 'POST', 'PUT'))
+@ns_user.route('/<username>', methods=('GET', 'POST', 'PUT', 'DELETE'))
 class User(Resource):
 	def __init__(self, api=None, *args, **kwargs):
 		super(User, self).__init__(api, *args, **kwargs)

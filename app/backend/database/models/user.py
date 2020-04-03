@@ -45,10 +45,6 @@ class User(UserMixin, db.Model, Base):
 		Role, secondary=user_role_table, backref=db.backref('user', lazy='dynamic')
 	)
 
-	## Triggers
-	# TODO: create on change to update date_modified when any field updated.
-	# TODO: create on change is_deleted to update the date_deleted to uctnow
-
 	## Properties
 	@property
 	def password(self):
@@ -69,7 +65,12 @@ class User(UserMixin, db.Model, Base):
 
 
 # Event Listeners
-@event.listens_for(User.is_active, 'modified')
-def on_changed_is_active(target, initiator):
-	""" Listen foris_active changes and update date_deleted """
-	target.date_deleted = datetime.utcnow()
+@event.listens_for(User.is_deleted, 'set')
+def on_changed_is_deleted(target, value, oldvalue, initiator):
+	""" Listen for is_deleted changes and update date_deleted """
+
+	target.date_deleted = None
+	# If is deleting
+	if oldvalue == False and value == True:
+		target.is_active = False
+		target.date_deleted = datetime.utcnow()

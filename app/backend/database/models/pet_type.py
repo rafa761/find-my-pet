@@ -2,10 +2,13 @@
 
 from datetime import datetime
 
+from flask_sqlalchemy import event
+
 from app.backend.database import db
+from app.backend.database.models.base import Base
 
 
-class PetType(db.Model):
+class PetType(db.Model, Base):
 	# Definition
 	__tablename__ = 'pet_type'
 	__table_args__ = {'extend_existing': True}
@@ -23,8 +26,17 @@ class PetType(db.Model):
 
 	# DateTime
 	date_created = db.Column(db.DateTime(), default=datetime.utcnow())
-	date_modified = db.Column(db.DateTime())
+	date_modified = db.Column(db.DateTime(), onupdate=datetime.utcnow())
 	date_deleted = db.Column(db.DateTime())
 
-	# Trigger
-	# TODO: Create event to update date_modified and date_deleted
+
+# Event Listeners
+@event.listens_for(PetType.is_deleted, 'set')
+def on_change_is_deleted(target, value, oldvalue, initiator):
+	""" Listen for is_deleted changes and update date_deleted """
+
+	target.date_deleted = None
+	# If is deleting
+	if oldvalue == False and value == True:
+		target.is_active = False
+		target.date_deleted = datetime.utcnow()
