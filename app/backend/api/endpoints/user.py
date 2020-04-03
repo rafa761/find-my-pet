@@ -26,7 +26,7 @@ class Users(Resource):
 		return self.bus.add(api.payload)
 
 
-@ns_user.route('/<username>')
+@ns_user.route('/<username>', methods=('GET', 'POST', 'PUT'))
 class User(Resource):
 	def __init__(self, api=None, *args, **kwargs):
 		super(User, self).__init__(api, *args, **kwargs)
@@ -35,6 +35,11 @@ class User(Resource):
 	@api.marshal_with(user_get_serializer)
 	def get(self, username):
 		return self.bus.get(username=username)
+
+	@api.expect(user_post_serializer)
+	@api.marshal_with(user_get_serializer)
+	def put(self, username):
+		return self.bus.put(username=username, payload=api.payload)
 
 	def delete(self, username):
 		return self.bus.delete(username=username)

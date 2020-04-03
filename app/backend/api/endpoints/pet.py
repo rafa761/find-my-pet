@@ -35,5 +35,10 @@ class Pet(Resource):
 	def get(self, id):
 		return self.bus.get(id=id)
 
+	@api.expect(pet_post_serializer)
+	@api.marshal_with(pet_get_serializer)
+	def put(self, id):
+		return self.bus.put(id=id, payload=api.payload)
+
 	def delete(self, id):
 		return self.bus.delete(id=id)

@@ -3,9 +3,10 @@
 from datetime import datetime
 
 from app.backend.database import db
+from app.backend.database.models.base import Base
 
 
-class Pet(db.Model):
+class Pet(db.Model, Base):
 	# Definition
 	__tablename__ = 'pet'
 	__table_args__ = {'extend_existing': True}
@@ -32,7 +33,7 @@ class Pet(db.Model):
 
 	# DateTime
 	date_created = db.Column(db.DateTime(), default=datetime.utcnow())
-	date_modified = db.Column(db.DateTime())
+	date_modified = db.Column(db.DateTime(), onupdate=datetime.utcnow())
 	date_deleted = db.Column(db.DateTime())
 
 # Relationship

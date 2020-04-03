@@ -9,6 +9,9 @@ Have you ever taught about how to help homeless or lost pets around the world, n
 
 ### Flask
 * [Flask](https://flask.palletsprojects.com/en/1.1.x/)
+* [Flask Restplus](https://flask-restplus.readthedocs.io/en/stable/)
+* [Flask SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/)
+* [Flask Dance](https://flask-dance.readthedocs.io/en/latest/)
 * [Flask Caching](https://flask-caching.readthedocs.io/en/latest/)
 * [Flask Migrate](https://flask-migrate.readthedocs.io/en/latest/)
 * [Flask Security](https://pythonhosted.org/Flask-Security/)
@@ -24,3 +27,12 @@ Have you ever taught about how to help homeless or lost pets around the world, n
 
 * FLASK_APP=pet.py
 * FLASK_ENV=development
+* FLASK_RUN_PORT=7000
+
+### Google OAuth
+* GOOGLE_OAUTH_CLIENT_ID='your client id'
+* GOOGLE_OAUTH_CLIENT_SECRET='your client token'
+
+If development environment:
+* OAUTHLIB_RELAX_TOKEN_SCOPE=True
+* OAUTHLIB_INSECURE_TRANSPORT=True
