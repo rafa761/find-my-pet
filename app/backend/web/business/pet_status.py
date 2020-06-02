@@ -1,5 +1,6 @@
 # coding=utf-8
 
+from flask_security import current_user
 from app.backend.database import db
 from app.backend.database.models.pet_status import PetStatus
 
@@ -51,9 +52,12 @@ class PetStatusBus(object):
 		return True
 
 	def get(self, **kwargs):
-		# Try to find with the received parameters
+
+		if not current_user.is_admin:
+			kwargs['is_deleted'] = False
+
 		if len(kwargs) > 0:
-			return PetStatus.query.filter_by(**kwargs).first()
+			return PetStatus.query.filter_by(**kwargs).all()
 
 		# if do not received any filter parameter
 		return PetStatus.query.all()

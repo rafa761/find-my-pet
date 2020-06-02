@@ -44,3 +44,12 @@ def on_changed_is_deleted(target, value, oldvalue, initiator):
 	if oldvalue == False and value == True:
 		target.is_active = False
 		target.date_deleted = datetime.utcnow()
+
+
+@event.listens_for(PetStatus.__table__, 'after_create')
+def insert_initial_values(*args, **kwargs):
+	db.session.add(PetStatus(description='lost'))
+	db.session.add(PetStatus(description='rescued'))
+	db.session.add(PetStatus(description='adopted'))
+	db.session.add(PetStatus(description='other'))
+	db.session.commit()

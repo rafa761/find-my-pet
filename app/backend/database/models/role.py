@@ -48,3 +48,10 @@ def on_changed_is_deleted(target, value, oldvalue, initiator):
 	if oldvalue == False and value == True:
 		target.is_active = False
 		target.date_deleted = datetime.utcnow()
+
+
+@event.listens_for(Role.__table__, 'after_create')
+def insert_initial_values(*args, **kwargs):
+	db.session.add(Role(name='admin', description='Administrators'))
+	db.session.add(Role(name='user', description='Users'))
+	db.session.commit()
