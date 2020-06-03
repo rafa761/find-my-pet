@@ -77,6 +77,11 @@ def pet_delete():
 	return response
 
 
+@main.route('/about')
+def about():
+	return render_template('about.html')
+
+
 @main.route('/logout')
 def logout():
 	logout_user()
