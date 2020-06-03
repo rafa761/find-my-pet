@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-    <form action="{{ url_for("main.pet_edit", pet_id=pet_dict.Pet.id) }}" method="POST">
+    <form action="{{ url_for("pet.pet_edit", pet_id=pet_dict.Pet.id) }}" method="POST">
         <div class="form-control">
             <label for="name">Name</label>
             <input type="text" class="form-control" name="name" id="name" value="{{ pet_dict.Pet.name }}">
@@ -53,7 +53,7 @@
 
             <div class="form-group">
                 <button type="submit" class="btn btn-success">Save</button>
-                <button type="submit" class="btn btn-danger" formaction="{{ url_for("main.pet_delete", pet_id=pet_dict.Pet.id) }}">Delete</button>
+                <button type="submit" class="btn btn-danger" formaction="{{ url_for("pet.pet_delete", pet_id=pet_dict.Pet.id) }}">Delete</button>
             </div>
 
         </div>

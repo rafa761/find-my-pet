@@ -35,6 +35,8 @@ def create_app(config_name=None):
 
 	# Frontend
 	from app.frontend.main import main as main_blueprint
+	from app.frontend.main import pet as pet_blueprint
 	app.register_blueprint(main_blueprint)
+	app.register_blueprint(pet_blueprint)
 
 	return app

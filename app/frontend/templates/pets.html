@@ -36,7 +36,7 @@
                     {% endif %}
                     <td>
                         <button type="button" class="btn btn-outline-secondary">
-                            <a href="{{ url_for("main.pet_edit", pet_id=pet_dict.Pet.id) }}">Edit</a>
+                            <a href="{{ url_for("pet.pet_edit", pet_id=pet_dict.Pet.id) }}">Edit</a>
                         </button>
                     </td>
                 </tr>
@@ -47,7 +47,7 @@
 
     <div>
         <button type="button" class="btn btn-outline-primary">
-            <a href="{{ url_for("main.pet_add") }}">Add Pet</a>
+            <a href="{{ url_for("pet.pet_add") }}">Add Pet</a>
         </button>
 
 
