@@ -14,16 +14,21 @@ class Base:
 		if attribute.startswith('date_'):
 			return False
 
-		if filter:
-			if not attribute in filter:
-				return False
+		if attribute not in filter:
+			return False
 
 		return True
 
-	def get_self_attributes(self, attr_filter=None):  # type: (Base, Any) -> List[str]
+	def get_self_attributes(self, attr_filter):
 		""" Custom Method to get attributes from any class
-		:param: attr_filter - Optional Iterable with the attributes to filter
+		:param: attr_filter - Iterable with the attributes to filter
 		 """
 		self_attributes = vars(self).keys()
+		filter_attributes = [x for x in attr_filter]
 
-		return [x for x in self_attributes if self.__predicate_attributes(x, filter=attr_filter)]
+		attributes_list = []
+		for attr in self_attributes:
+			if self.__predicate_attributes(attr, filter=filter_attributes):
+				attributes_list.append(attr)
+
+		return attributes_list

@@ -6,51 +6,49 @@
 {% endblock %}
 
 {% block content %}
-    <div class="mx-auto center">
-        <table class="table table-sm table-bordered table-striped table-hover">
-            <thead>
-            <tr>
-                <th scope="col">Status</th>
-                <th scope="col">Name</th>
-                <th scope="col">Type</th>
-                <th scope="col">Breed</th>
-                <th scope="col">Color</th>
-                <th scope="col">Weight</th>
+    <table class="table table-sm table-bordered table-striped table-hover text-center">
+        <thead>
+        <tr>
+            <th scope="col">Status</th>
+            <th scope="col">Name</th>
+            <th scope="col">Type</th>
+            <th scope="col">Breed</th>
+            <th scope="col">Color</th>
+            <th scope="col">Weight</th>
+            {% if current_user.is_admin %}
+                <th scope="col">Deleted</th>
+                <th scope="col">Edit</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for pet_dict in pet_list %}
+            <tr {% if pet_dict.PetStatus.description == "lost" %} class="table-warning" {% endif %}
+                    {% if pet_dict.PetStatus.description == "adopted" %} class="table-success" {% endif %}>
+                <td>{{ pet_dict.PetStatus.description }}</td>
+                <td>{{ pet_dict.Pet.name }}</td>
+                <td>{{ pet_dict.PetType.description }}</td>
+                <td>{{ pet_dict.Pet.breed }}</td>
+                <td>{{ pet_dict.Pet.color }}</td>
+                <td>{{ pet_dict.Pet.weight }}</td>
                 {% if current_user.is_admin %}
-                    <th scope="col">Deleted</th>
-                {% endif %}
-            </tr>
-            </thead>
-            <tbody>
-            {% for pet_dict in pet_list %}
-                <tr {% if pet_dict.PetStatus.description == "lost" %} class="table-warning" {% endif %}
-                {% if pet_dict.PetStatus.description == "adopted" %} class="table-success" {% endif %}>
-                    <td>{{ pet_dict.PetStatus.description }}</td>
-                    <td>{{ pet_dict.Pet.name }}</td>
-                    <td>{{ pet_dict.PetType.description }}</td>
-                    <td>{{ pet_dict.Pet.breed }}</td>
-                    <td>{{ pet_dict.Pet.color }}</td>
-                    <td>{{ pet_dict.Pet.weight }}</td>
-                    {% if current_user.is_admin %}
-                        <td>{{ pet_dict.Pet.is_deleted }}</td>
-                    {% endif %}
+                    <td>{{ pet_dict.Pet.is_deleted }}</td>
                     <td>
-                        <button type="button" class="btn btn-outline-secondary">
+                        <button type="button" class="btn btn-outline-secondary btn-sm">
                             <a href="{{ url_for("pet.pet_edit", pet_id=pet_dict.Pet.id) }}">Edit</a>
                         </button>
                     </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+                {% endif %}
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
     <div>
-        <button type="button" class="btn btn-outline-primary">
+        <button type="button" class="btn btn-outline-success">
             <a href="{{ url_for("pet.pet_add") }}">Add Pet</a>
         </button>
-
-
     </div>
 
 {% endblock %}

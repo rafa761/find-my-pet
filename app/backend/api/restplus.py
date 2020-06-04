@@ -10,6 +10,5 @@ api = Api(
 
 
 @api.errorhandler
-def default_error_handler(e):
-	message = 'Unexpected error occurred!'
-	return {'message': message}, 500
+def default_error_handler(error):
+	return {'message': str(error)}, getattr(error, 'code', 500)

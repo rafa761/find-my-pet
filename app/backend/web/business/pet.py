@@ -61,7 +61,7 @@ class PetBus(object):
 			kwargs['is_deleted'] = False
 
 		if len(kwargs) > 0:
-			return Pet.query.filter_by(**kwargs).first()
+			return Pet.query.filter_by(**kwargs).all()
 
 		return Pet.query.all()
 

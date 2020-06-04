@@ -13,6 +13,8 @@ from app.backend.database.models.pet_type import PetType
 from app.backend.database.models.user import User
 from app.backend.web import create_app
 from app.config import MIGRATION_DIR
+from flask import render_template
+from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 
 app = create_app(os.getenv('FLASK_CONFIG', 'default'))
 migrate = Migrate(app, db, directory=MIGRATION_DIR)
@@ -30,6 +32,12 @@ def make_shell_context():
 		PetStatus=PetStatus,
 		PetType=PetType
 	)
+
+
+@app.errorhandler
+def default_error_handler(Exception):
+	# return {'message': str(error)}, getattr(error, 'code', 500)
+	return render_template('error.html'), 500
 
 
 if __name__ == '__main__':
