@@ -39,6 +39,8 @@ class DevelopmentConfig(Config):
 	DEBUG = True
 
 	# Database
+	SQLALCHEMY_ECHO = True  # log all the statements issued to stderr
+	SQLALCHEMY_TRACK_MODIFICATIONS = True  # track modifications of objects and emit signals
 	databasedir = Path(__file__).parent.joinpath('backend\database')
 	SQLALCHEMY_DATABASE_URI = f"sqlite:///{os.path.join(databasedir, 'fmp-dev.sqlite')}"
 
@@ -47,6 +49,9 @@ class TestingConfig(Config):
 	# Flask
 	TESTING = True
 	DEBUG = True
+
+	# Flask Forms
+	WTF_CSRF_ENABLED = False
 
 	# Database
 	SQLALCHEMY_DATABASE_URI = 'sqlite://'

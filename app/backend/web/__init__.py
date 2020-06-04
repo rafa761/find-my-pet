@@ -34,7 +34,9 @@ def create_app(config_name=None):
 	app.register_blueprint(oauth_blueprint, url_prefix='/login')
 
 	# Frontend
-	from app.frontend.main import main as main_blueprint
+	from app.frontend.views import main_blueprint
+	from app.frontend.views import pet_blueprint
 	app.register_blueprint(main_blueprint)
+	app.register_blueprint(pet_blueprint)
 
 	return app

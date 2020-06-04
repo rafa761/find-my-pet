@@ -47,6 +47,7 @@ def google_logged_in(oauth_blueprint, token):
 		# Create a new local user account for this user
 		# TODO: Check how to define a default to the required fields
 		user = User(
+			username=info.get('given_name', '').lower(),
 			first_name=info.get('given_name'),
 			last_name=info.get('family_name'),
 			email=info['email'],

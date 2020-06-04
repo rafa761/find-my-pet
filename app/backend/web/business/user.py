@@ -8,17 +8,40 @@ class UserBus(object):
 	def add(self, payload):
 		user = User(**payload)
 
-
+		# Add to the database
 		db.session.add(user)
 		db.session.commit()
 
 		return user
 
+	def put(self, username, payload):
+		# Get from database
+		user = self.get(username=username)
+		if not user:
+			return
+
+		# Update object with incoming payload
+		for field in user.get_self_attributes(attr_filter=payload.keys()):
+			setattr(user, field, payload.get(field))
+
+		# Add to the database
+		db.session.add(user)
+		db.session.commit()
+
+		return self.get(username=username)
+
 	def delete(self, username):
-		user = User.query.filter_by(username=username).first()
+		# Get from database
+		user = self.get(username=username)
+		if not user:
+			return False
 
 		try:
-			db.session.delete(user)
+			# When deleting, we don't delete from the database, but just set as deleted
+			user.is_deleted = True
+
+			# Add to the database
+			db.session.add(user)
 			db.session.commit()
 
 		except:
@@ -28,6 +51,7 @@ class UserBus(object):
 		return True
 
 	def get(self, **kwargs):
+		# Try to find with the received parameters
 		if len(kwargs) > 0:
 			return User.query.filter_by(**kwargs).first()
 

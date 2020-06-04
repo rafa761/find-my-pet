@@ -2,30 +2,22 @@
 
 from datetime import datetime
 
-from flask_security import RoleMixin
 from flask_sqlalchemy import event
 
 from app.backend.database import db
-
-user_role_table = db.Table(
-	'user_role',
-	db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
-	db.Column('role_id', db.Integer(), db.ForeignKey('role.id')),
-)
+from app.backend.database.models.base import Base
 
 
-class Role(db.Model, RoleMixin):
-	__tablename__ = 'role'
+class PetStatus(db.Model, Base):
+	# Definition
+	__tablename__ = 'pet_status'
 	__table_args__ = {'extend_existing': True}
 
 	# Integer
-	id = db.Column(db.Integer(), primary_key=True)
+	id = db.Column(db.Integer, primary_key=True)
 
 	# String
-	name = db.Column(db.String(80), unique=True)
-	description = db.Column(db.String(255))
-
-	# Text
+	description = db.Column(db.String(60))
 	info = db.Column(db.Text())
 
 	# Boolean
@@ -37,9 +29,13 @@ class Role(db.Model, RoleMixin):
 	date_modified = db.Column(db.DateTime(), onupdate=datetime.utcnow())
 	date_deleted = db.Column(db.DateTime())
 
+	## Magic Methods Override
+	def __repr__(self):
+		return f'<id {self.id}, description {self.description}>'
+
 
 # Event Listeners
-@event.listens_for(Role.is_deleted, 'set')
+@event.listens_for(PetStatus.is_deleted, 'set')
 def on_changed_is_deleted(target, value, oldvalue, initiator):
 	""" Listen for is_deleted changes and update date_deleted """
 
@@ -50,8 +46,10 @@ def on_changed_is_deleted(target, value, oldvalue, initiator):
 		target.date_deleted = datetime.utcnow()
 
 
-@event.listens_for(Role.__table__, 'after_create')
+@event.listens_for(PetStatus.__table__, 'after_create')
 def insert_initial_values(*args, **kwargs):
-	db.session.add(Role(name='admin', description='Administrators'))
-	db.session.add(Role(name='user', description='Users'))
+	db.session.add(PetStatus(description='lost'))
+	db.session.add(PetStatus(description='rescued'))
+	db.session.add(PetStatus(description='adopted'))
+	db.session.add(PetStatus(description='other'))
 	db.session.commit()
