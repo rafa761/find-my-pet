@@ -12,7 +12,7 @@ from app.frontend.views import pet_blueprint
 
 @pet_blueprint.route('/pets')
 def pets():
-	pet_list = PetBus().get_all()
+	pet_list = PetBus().get()
 
 	return render_template('pets.html', pet_list=pet_list, current_user=current_user)
 
@@ -35,18 +35,18 @@ def pet_add():
 
 @pet_blueprint.route('/edit', methods=('GET', 'POST',))
 def pet_edit():
-	pet_id = request.args.get('pet_id')
+	id = request.args.get('id')
 
 	if request.method == 'GET':
 		pet_type_list = PetTypeBus().get()
 		pet_status_list = PetStatusBus().get()
 
-		pet_dict = PetBus().get_all(id=pet_id)
+		pet_dict = PetBus().get(id=id)
 		return render_template('pet-edit.html', pet_dict=pet_dict[0], pet_type_list=pet_type_list,
 		                       pet_status_list=pet_status_list)
 
 	try:
-		PetBus().put(pet_id, request.form)
+		PetBus().put(id, request.form)
 		flash('Successfuly edited Pet', category='message')
 		return redirect(url_for('pet.pets'))
 
@@ -56,10 +56,8 @@ def pet_edit():
 
 @pet_blueprint.route('/delete', methods=('POST',))
 def pet_delete():
-	pet_id = request.args.get('pet_id')
-
 	try:
-		PetBus().delete(pet_id)
+		PetBus().delete(request.args.get('id'))
 		flash('Successfuly deleted Pet', category='message')
 		return redirect(url_for('pet.pets'))
 

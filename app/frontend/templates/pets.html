@@ -23,19 +23,19 @@
         </thead>
         <tbody>
         {% for pet_dict in pet_list %}
-            <tr {% if pet_dict.PetStatus.description == "lost" %} class="table-warning" {% endif %}
-                    {% if pet_dict.PetStatus.description == "adopted" %} class="table-success" {% endif %}>
-                <td>{{ pet_dict.PetStatus.description }}</td>
-                <td>{{ pet_dict.Pet.name }}</td>
-                <td>{{ pet_dict.PetType.description }}</td>
-                <td>{{ pet_dict.Pet.breed }}</td>
-                <td>{{ pet_dict.Pet.color }}</td>
-                <td>{{ pet_dict.Pet.weight }}</td>
+            <tr {% if pet_dict.status_description == "lost" %} class="table-warning" {% endif %}
+                    {% if pet_dict.status_description == "adopted" %} class="table-success" {% endif %}>
+                <td>{{ pet_dict.status_description }}</td>
+                <td>{{ pet_dict.name }}</td>
+                <td>{{ pet_dict.type_description }}</td>
+                <td>{{ pet_dict.breed }}</td>
+                <td>{{ pet_dict.color }}</td>
+                <td>{{ pet_dict.weight }}</td>
                 {% if current_user.is_admin %}
-                    <td>{{ pet_dict.Pet.is_deleted }}</td>
+                    <td>{{ pet_dict.is_deleted }}</td>
                     <td>
                         <button type="button" class="btn btn-outline-secondary btn-sm">
-                            <a href="{{ url_for("pet.pet_edit", pet_id=pet_dict.Pet.id) }}">Edit</a>
+                            <a href="{{ url_for("pet.pet_edit", id=pet_dict.id) }}">Edit</a>
                         </button>
                     </td>
                 {% endif %}

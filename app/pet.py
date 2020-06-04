@@ -11,10 +11,10 @@ from app.backend.database.models.role import Role
 from app.backend.database.models.pet_status import PetStatus
 from app.backend.database.models.pet_type import PetType
 from app.backend.database.models.user import User
+from app.backend.database.models.event import Event
 from app.backend.web import create_app
 from app.config import MIGRATION_DIR
 from flask import render_template
-from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 
 app = create_app(os.getenv('FLASK_CONFIG', 'default'))
 migrate = Migrate(app, db, directory=MIGRATION_DIR)
@@ -30,7 +30,8 @@ def make_shell_context():
 		Role=Role,
 		Pet=Pet,
 		PetStatus=PetStatus,
-		PetType=PetType
+		PetType=PetType,
+		Event=Event
 	)
 
 

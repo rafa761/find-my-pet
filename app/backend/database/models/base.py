@@ -17,7 +17,9 @@ class Base:
 		return attribute in filter
 
 	def get_self_attributes(self, attr_filter):
-		""" Custom Method to get attributes from any class
+		""" To turn the updates queries dynamic for any class, this method get the self attributes
+		and compares with the received filter
+		It excludes some read_only fields and returns the list of attributes that can be changed
 		:param: attr_filter - Iterable with the attributes to filter
 		 """
 		self_attributes = vars(self).keys()

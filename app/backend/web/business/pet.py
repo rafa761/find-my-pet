@@ -56,28 +56,37 @@ class PetBus(object):
 		return True
 
 	def get(self, **kwargs):
-
 		if not current_user.is_admin:
 			kwargs['is_deleted'] = False
 
-		if len(kwargs) > 0:
-			return Pet.query.filter_by(**kwargs).all()
+		base_query = db.session.query(Pet.id, Pet.name, Pet.status_id, Pet.type_id, Pet.weight, Pet.name, Pet.color,
+		                              Pet.breed, Pet.info, Pet.is_active, Pet.is_deleted, PetStatus.description,
+		                              PetType.description)
 
-		return Pet.query.all()
+		filter_query = base_query.filter(Pet.status_id == PetStatus.id, Pet.type_id == PetType.id)
 
-	def get_all(self, **kwargs):
+		if kwargs:
+			final_query = filter_query.filter_by(**kwargs).all()
 
-		if not current_user.is_admin:
-			kwargs['is_deleted'] = False
+		else:
+			final_query = filter_query.all()
 
-		if len(kwargs) > 0:
-			return (db.session.query(Pet, PetStatus, PetType).filter(
-			    Pet.status_id == PetStatus.id,
-			    Pet.type_id == PetType.id).filter_by(**kwargs).all())
+		result_list = []
+		for record in final_query:
+			result_list.append({
+				'id': record[0],
+				'name': record[1],
+				'status_id': record[2],
+				'type_id': record[3],
+				'weight': record[4],
+				'name': record[5],
+				'color': record[6],
+				'breed': record[7],
+				'info': record[8],
+				'is_active': record[9],
+				'is_deleted': record[10],
+				'status_description': record[11],
+				'type_description': record[12],
+			})
 
-		# if do not received any filter parameter
-		return db.session.query(
-				Pet,
-				PetStatus,
-				PetType
-			).filter(Pet.status_id == PetStatus.id, Pet.type_id == PetType.id).all()
+		return result_list
