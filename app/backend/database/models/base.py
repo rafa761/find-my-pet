@@ -14,10 +14,7 @@ class Base:
 		if attribute.startswith('date_'):
 			return False
 
-		if attribute not in filter:
-			return False
-
-		return True
+		return attribute in filter
 
 	def get_self_attributes(self, attr_filter):
 		""" Custom Method to get attributes from any class

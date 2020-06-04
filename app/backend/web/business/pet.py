@@ -71,18 +71,13 @@ class PetBus(object):
 			kwargs['is_deleted'] = False
 
 		if len(kwargs) > 0:
-			pet_list = db.session.query(
+			return (db.session.query(Pet, PetStatus, PetType).filter(
+			    Pet.status_id == PetStatus.id,
+			    Pet.type_id == PetType.id).filter_by(**kwargs).all())
+
+		# if do not received any filter parameter
+		return db.session.query(
 				Pet,
 				PetStatus,
 				PetType
-			).filter(Pet.status_id == PetStatus.id, Pet.type_id == PetType.id).filter_by(**kwargs).all()
-			return pet_list
-
-		pets_list = db.session.query(
-			Pet,
-			PetStatus,
-			PetType
-		).filter(Pet.status_id == PetStatus.id, Pet.type_id == PetType.id).all()
-
-		# if do not received any filter parameter
-		return pets_list
+			).filter(Pet.status_id == PetStatus.id, Pet.type_id == PetType.id).all()
