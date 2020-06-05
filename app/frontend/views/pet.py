@@ -18,7 +18,7 @@ def pets():
 
 
 @pet_blueprint.route('/add', methods=('GET', 'POST',))
-def pet_add():
+def add():
 	if request.method == 'GET':
 		pet_type_list = PetTypeBus().get()
 		pet_status_list = PetStatusBus().get()
@@ -34,7 +34,7 @@ def pet_add():
 
 
 @pet_blueprint.route('/edit', methods=('GET', 'POST',))
-def pet_edit():
+def edit():
 	id = request.args.get('id')
 
 	if request.method == 'GET':
@@ -55,7 +55,7 @@ def pet_edit():
 
 
 @pet_blueprint.route('/delete', methods=('POST',))
-def pet_delete():
+def delete():
 	try:
 		PetBus().delete(request.args.get('id'))
 		flash('Successfuly deleted Pet', category='message')

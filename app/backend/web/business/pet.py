@@ -63,7 +63,7 @@ class PetBus(object):
 		                              Pet.breed, Pet.info, Pet.is_active, Pet.is_deleted, PetStatus.description,
 		                              PetType.description)
 
-		filter_query = base_query.filter(Pet.status_id == PetStatus.id, Pet.type_id == PetType.id)
+		filter_query = base_query.join(PetStatus, Pet.status_id == PetStatus.id).join(PetType,  Pet.type_id == PetType.id)
 
 		if kwargs:
 			final_query = filter_query.filter_by(**kwargs).all()

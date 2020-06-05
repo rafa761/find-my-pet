@@ -58,8 +58,7 @@ class EventBus(object):
 		base_query = db.session.query(Event.id, Event.description, Event.is_deleted, Event.event_date,
 		                              Pet.id, Pet.name, PetStatus.description)
 
-		# TODO: Tem que ser Left outer join
-		filter_query = base_query.filter(Event.pet_id == Pet.id, Pet.status_id == PetStatus.id)
+		filter_query = base_query.outerjoin(Pet, Event.pet_id == Pet.id).join(PetStatus, Pet.status_id == PetStatus.id)
 
 		if kwargs:
 			final_query = filter_query.filter_by(**kwargs).all()

@@ -35,7 +35,7 @@
                     <td>{{ pet_dict.is_deleted }}</td>
                     <td>
                         <button type="button" class="btn btn-outline-secondary btn-sm">
-                            <a href="{{ url_for("pet.pet_edit", id=pet_dict.id) }}">Edit</a>
+                            <a href="{{ url_for("pet.edit", id=pet_dict.id) }}">Edit</a>
                         </button>
                     </td>
                 {% endif %}
@@ -47,7 +47,7 @@
 
     <div>
         <button type="button" class="btn btn-outline-success">
-            <a href="{{ url_for("pet.pet_add") }}">Add Pet</a>
+            <a href="{{ url_for("pet.add") }}">Add Pet</a>
         </button>
     </div>
 

@@ -30,10 +30,10 @@
                 {% if current_user.is_admin %}
                     <td>{{ event_dict.is_deleted }}</td>
                     <td>
-                    Edit
-{#                        <button type="button" class="btn btn-outline-secondary btn-sm">#}
-{#                            <a href="{{ url_for("pet.pet_edit", pet_id=pet_dict.Pet.id) }}">Edit</a>#}
-{#                        </button>#}
+                        Edit
+                        {#                        <button type="button" class="btn btn-outline-secondary btn-sm">#}
+                        {#                            <a href="{{ url_for("pet.edit", pet_id=pet_dict.Pet.id) }}">Edit</a>#}
+                        {#                        </button>#}
                     </td>
                 {% endif %}
 
@@ -42,10 +42,10 @@
         </tbody>
     </table>
 
-{#    <div>#}
-{#        <button type="button" class="btn btn-outline-success">#}
-{#            <a href="{{ url_for("pet.pet_add") }}">Add Pet</a>#}
-{#        </button>#}
-{#    </div>#}
+    <div>
+        <button type="button" class="btn btn-outline-success">
+            <a href="{{ url_for("event.add") }}">Add Event</a>
+        </button>
+    </div>
 
 {% endblock %}

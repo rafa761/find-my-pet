@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-    <form action="{{ url_for("pet.pet_edit", pet_id=pet_dict.id) }}" method="POST">
+    <form action="{{ url_for("pet.edit", pet_id=pet_dict.id) }}" method="POST">
         <div class="form-control">
 
             <div class="container">
@@ -16,7 +16,7 @@
                         <input type="text" class="form-control" name="name" id="name" value="{{ pet_dict.name }}">
                     </div>
 
-                    <div class="col-sm">
+                    <div class="col-2">
                         <div class="form-group">
                             <label for="type_id">Type</label>
                             <select class="form-control" name="type_id" id="type_id">
@@ -32,28 +32,26 @@
                         </div>
                     </div>
 
-                    <div class="col-sm">
+                    <div class="col-3">
                         <label for="color">Color</label>
                         <input type="text" class="form-control" name="color" id="color"
                                value="{{ pet_dict.color }}">
                     </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-sm">
+                    <div class="col-2">
                         <label for="weight">Weight</label>
                         <input type="number" class="form-control" name="weight" id="weight"
                                value="{{ pet_dict.weight }}">
                     </div>
+                </div>
 
+                <div class="row">
                     <div class="col-sm">
                         <label for="breed">Breed</label>
                         <input type="text" class="form-control" name="breed" id="breed"
                                value="{{ pet_dict.breed }}">
                     </div>
-                </div>
 
-                <div class="row">
                     <div class="col-sm">
                         <div class="form-group">
                             <label for="status_id">Status</label>
@@ -83,7 +81,7 @@
                         <div class="form-group">
                             <button type="submit" class="btn btn-success">Save</button>
                             <button type="submit" class="btn btn-danger"
-                                    formaction="{{ url_for("pet.pet_delete", id=pet_dict.id) }}">Delete
+                                    formaction="{{ url_for("pet.delete", id=pet_dict.id) }}">Delete
                             </button>
                         </div>
                     </div>
