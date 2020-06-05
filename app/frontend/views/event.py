@@ -29,11 +29,32 @@ def add():
 		return render_template('error.html', message=str(error))
 
 
-# @event_blueprint.route('/edit', methods=('GET', 'POST',))
-# def edit():
-# 	pass
-#
-#
+@event_blueprint.route('/edit', methods=('GET', 'POST',))
+def edit():
+	event_id = request.args.get('event_id')
+
+	if request.method == 'GET':
+		pet_list = PetBus().get()
+		event_dict = EventBus().get(id=event_id)
+
+		return render_template('event-edit.html', event_dict=event_dict[0], pet_list=pet_list)
+
+	try:
+		EventBus().put(event_id, request.form)
+		flash('Successfuly edited Event', category='message')
+		return redirect(url_for('event.events'))
+
+	except Exception as error:
+		return render_template('error.html', message=str(error))
+
+
 # @event_blueprint('/delete', methods=('GET', 'POST',))
 # def delete():
-# 	pass
+# 	try:
+# 		PetBus().delete(request.args.get('event_id'))
+# 		flash('Successfuly deleted Pet', category='message')
+# 		return redirect(url_for('pet.pets'))
+#
+# 	except Exception as error:
+# 		return render_template('error.html', message=str(error))
+

@@ -1,6 +1,7 @@
 # coding=utf-8
 
 from flask_security import current_user
+
 from app.backend.database import db
 from app.backend.database.models.pet import Pet
 from app.backend.database.models.pet_status import PetStatus
@@ -17,36 +18,30 @@ class PetBus(object):
 		return pet
 
 	def put(self, id, payload):
-		# Get from database
-		pet_list = self.get(id=id)
-		if not pet_list:
+		pet_obj = Pet().query.filter_by(id=id).first()
+		if not pet_obj:
 			return
 
-		pet_dict = pet_list[0]
-
 		# Update pet object with incoming payload
-		for field in pet_dict.get_self_attributes(attr_filter=payload.keys()):
-			setattr(pet_dict, field, payload.get(field))
+		for field in pet_obj.get_columns(filter_list=[x for x in payload.keys()]):
+			setattr(pet_obj, field, payload[field])
 
-		# Add to the database
-		db.session.add(pet_dict)
+		db.session.add(pet_obj)
 		db.session.commit()
 
 		return self.get(id=id)
 
 	def delete(self, id):
-		pet_list = self.get(id=id)
-		if not pet_list:
-			return False
-
-		pet_dict = pet_list[0]
+		pet_obj = Pet().query.filter_by(id=id).first()
+		if not pet_obj:
+			return
 
 		# When deleting, we don't delete from the database, but just set as deleted
 		try:
-			pet_dict.is_deleted = True
+			pet_obj.is_deleted = True
 
 			# Add to the database
-			db.session.add(pet_dict)
+			db.session.add(pet_obj)
 			db.session.commit()
 
 		except:
@@ -63,13 +58,14 @@ class PetBus(object):
 		                              Pet.breed, Pet.info, Pet.is_active, Pet.is_deleted, PetStatus.description,
 		                              PetType.description)
 
-		filter_query = base_query.join(PetStatus, Pet.status_id == PetStatus.id).join(PetType,  Pet.type_id == PetType.id)
-
 		if kwargs:
-			final_query = filter_query.filter_by(**kwargs).all()
+			base_query = base_query.filter_by(**kwargs)
 
-		else:
-			final_query = filter_query.all()
+		join_query = base_query.join(PetStatus, Pet.status_id == PetStatus.id).join(PetType, Pet.type_id == PetType.id)
+
+		order_query = join_query.order_by(Pet.date_modified.desc())
+
+		final_query = order_query.all()
 
 		result_list = []
 		for record in final_query:

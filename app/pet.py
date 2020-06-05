@@ -1,6 +1,7 @@
 # coding=utf-8
 
 import os
+from dateutil.parser import parse
 
 from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
@@ -33,6 +34,15 @@ def make_shell_context():
 		PetType=PetType,
 		Event=Event
 	)
+
+
+@app.template_filter('strftime')
+def _jinja2_filter_datetime(date, fmt=None):
+	date = parse(date)
+	native = date.replace(tzinfo=None)
+	format = '%Y-%m-%d'
+
+	return native.strftime(format)
 
 
 @app.errorhandler

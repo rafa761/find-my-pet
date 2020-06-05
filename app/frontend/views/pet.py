@@ -22,6 +22,7 @@ def add():
 	if request.method == 'GET':
 		pet_type_list = PetTypeBus().get()
 		pet_status_list = PetStatusBus().get()
+
 		return render_template('pet-add.html', pet_type_list=pet_type_list, pet_status_list=pet_status_list)
 
 	try:
@@ -35,18 +36,18 @@ def add():
 
 @pet_blueprint.route('/edit', methods=('GET', 'POST',))
 def edit():
-	id = request.args.get('id')
+	pet_id = request.args.get('pet_id')
 
 	if request.method == 'GET':
 		pet_type_list = PetTypeBus().get()
 		pet_status_list = PetStatusBus().get()
+		pet_list = PetBus().get(id=pet_id)
 
-		pet_dict = PetBus().get(id=id)
-		return render_template('pet-edit.html', pet_dict=pet_dict[0], pet_type_list=pet_type_list,
+		return render_template('pet-edit.html', pet_dict=pet_list[0], pet_type_list=pet_type_list,
 		                       pet_status_list=pet_status_list)
 
 	try:
-		PetBus().put(id, request.form)
+		PetBus().put(pet_id, request.form)
 		flash('Successfuly edited Pet', category='message')
 		return redirect(url_for('pet.pets'))
 
@@ -57,7 +58,7 @@ def edit():
 @pet_blueprint.route('/delete', methods=('POST',))
 def delete():
 	try:
-		PetBus().delete(request.args.get('id'))
+		PetBus().delete(request.args.get('pet_id'))
 		flash('Successfuly deleted Pet', category='message')
 		return redirect(url_for('pet.pets'))
 

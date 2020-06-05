@@ -3,31 +3,23 @@
 
 class Base:
 
-	def __predicate_attributes(self, attribute, filter):
-		""" Check custom rules to ignore some attributes """
-		if attribute == 'id':
-			return False
+	def get_columns(self, filter_list=None):
+		""":arg filter_list = List for columns to filter"""
 
-		if attribute.startswith('_'):
-			return False
+		column_list = []
+		for column in self.__table__.columns:
+			if filter_list and (column.key not in filter_list):
+				continue
 
-		if attribute.startswith('date_'):
-			return False
+			if column.key == 'id':
+				continue
 
-		return attribute in filter
+			if column.key.startswith('_'):
+				continue
 
-	def get_self_attributes(self, attr_filter):
-		""" To turn the updates queries dynamic for any class, this method get the self attributes
-		and compares with the received filter
-		It excludes some read_only fields and returns the list of attributes that can be changed
-		:param: attr_filter - Iterable with the attributes to filter
-		 """
-		self_attributes = vars(self).keys()
-		filter_attributes = [x for x in attr_filter]
+			if column.key.startswith('date_'):
+				continue
 
-		attributes_list = []
-		for attr in self_attributes:
-			if self.__predicate_attributes(attr, filter=filter_attributes):
-				attributes_list.append(attr)
+			column_list.append(column.key)
 
-		return attributes_list
+		return column_list

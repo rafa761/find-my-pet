@@ -1,6 +1,7 @@
 # coding=utf-8
 
 from datetime import datetime
+from dateutil.parser import parse
 from flask_security import current_user
 
 from app.backend.database import db
@@ -23,31 +24,31 @@ class EventBus(object):
 		return event
 
 	def put(self, id, payload):
-		event_list = self.get(id=id)
-		if not event_list:
+		event_obj = Event().query.filter_by(id=id).first()
+		if not event_obj:
 			return
 
-		event_dict = event_list[0]
+		for field in event_obj.get_columns(filter_list=[x for x in payload.keys()]):
+			setattr(event_obj, field, payload[field])
 
-		for field in event_dict.get_self_attributes(attr_filter=payload.keys()):
-			setattr(event_dict, field, payload.get(field))
+		# Date correction
+		if event_obj.event_date:
+			event_obj.event_date = parse(event_obj.event_date)
 
-		db.session.add(event_dict)
+		db.session.add(event_obj)
 		db.session.commit()
 
 		return self.get(id=id)
 
 	def delete(self, id):
-		event_list = self.get(id=id)
-		if not event_list:
+		event_obj = Event().query.filter_by(id=id).first()
+		if not event_obj:
 			return
 
-		event_dict = event_list[0]
-
 		try:
-			event_dict.is_deleted = True
+			event_obj.is_deleted = True
 
-			db.session.add(event_dict)
+			db.session.add(event_obj)
 			db.session.commit()
 
 		except:
@@ -58,20 +59,19 @@ class EventBus(object):
 
 	def get(self, **kwargs):
 		if not current_user.is_admin:
-			kwargs['pet.is_deleted'] = False
+			kwargs['is_deleted'] = False
 
 		base_query = db.session.query(Event.id, Event.description, Event.is_deleted, Event.event_date,
 		                              Pet.id, Pet.name, PetStatus.description)
 
-		filter_query = base_query.outerjoin(Pet, Event.pet_id == Pet.id).outerjoin(PetStatus, Pet.status_id == PetStatus.id)
-
-		order_query = filter_query.order_by(Event.event_date.desc())
-
 		if kwargs:
-			final_query = order_query.filter_by(**kwargs).all()
+			base_query = base_query.filter_by(**kwargs)
 
-		else:
-			final_query = order_query.all()
+		join_query = base_query.outerjoin(Pet, Event.pet_id == Pet.id).outerjoin(PetStatus, Pet.status_id == PetStatus.id)
+
+		order_query = join_query.order_by(Event.event_date.desc())
+
+		final_query = order_query.all()
 
 		result_list = []
 		for record in final_query:
@@ -79,18 +79,10 @@ class EventBus(object):
 				'id': record[0],
 				'description': record[1],
 				'is_deleted': record[2],
-				'event_date': record[3],
+				'event_date': datetime.strftime(record[3], '%d/%m/%Y'),
 				'pet_id': record[4] or '',
 				'pet_name': record[5] or '',
 				'pet_status_description': record[6] or '',
 			})
 
 		return result_list
-
-	def get_all(self, **kwargs):
-
-		if not current_user.is_admin:
-			kwargs['is_deleted'] = False
-
-		if len(kwargs) > 0:
-			event_list = db.session.query(Event, Pet).join(Pet)
