@@ -23,7 +23,7 @@ class Event(db.Model, Base):
 	is_deleted = db.Column(db.Boolean(), default=False)
 
 	# DataTime
-	event_date = db.Column(db.DateTime())
+	event_date = db.Column(db.Date())
 	date_created = db.Column(db.DateTime(), default=datetime.utcnow())
 	date_modified = db.Column(db.DateTime(), default=datetime.utcnow())
 	date_deleted = db.Column(db.DateTime())

@@ -1,5 +1,6 @@
 # coding=utf-8
 
+from datetime import datetime
 from flask_security import current_user
 
 from app.backend.database import db
@@ -10,7 +11,11 @@ from app.backend.database.models.pet_status import PetStatus
 
 class EventBus(object):
 	def add(self, payload):
+
 		event = Event(**payload)
+
+		if event.event_date:
+			event.event_date = datetime.strptime(event.event_date, '%Y-%m-%d')
 
 		db.session.add(event)
 		db.session.commit()
@@ -53,18 +58,20 @@ class EventBus(object):
 
 	def get(self, **kwargs):
 		if not current_user.is_admin:
-			kwargs['is_deleted'] = False
+			kwargs['pet.is_deleted'] = False
 
 		base_query = db.session.query(Event.id, Event.description, Event.is_deleted, Event.event_date,
 		                              Pet.id, Pet.name, PetStatus.description)
 
-		filter_query = base_query.outerjoin(Pet, Event.pet_id == Pet.id).join(PetStatus, Pet.status_id == PetStatus.id)
+		filter_query = base_query.outerjoin(Pet, Event.pet_id == Pet.id).outerjoin(PetStatus, Pet.status_id == PetStatus.id)
+
+		order_query = filter_query.order_by(Event.event_date.desc())
 
 		if kwargs:
-			final_query = filter_query.filter_by(**kwargs).all()
+			final_query = order_query.filter_by(**kwargs).all()
 
 		else:
-			final_query = filter_query.all()
+			final_query = order_query.all()
 
 		result_list = []
 		for record in final_query:
@@ -73,9 +80,9 @@ class EventBus(object):
 				'description': record[1],
 				'is_deleted': record[2],
 				'event_date': record[3],
-				'pet_id': record[4],
-				'pet_name': record[5],
-				'pet_status_description': record[6],
+				'pet_id': record[4] or '',
+				'pet_name': record[5] or '',
+				'pet_status_description': record[6] or '',
 			})
 
 		return result_list
