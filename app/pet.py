@@ -1,6 +1,7 @@
 # coding=utf-8
 
 import os
+from dateutil.parser import parse
 
 from flask_migrate import Migrate
 from flask_bootstrap import Bootstrap
@@ -11,10 +12,10 @@ from app.backend.database.models.role import Role
 from app.backend.database.models.pet_status import PetStatus
 from app.backend.database.models.pet_type import PetType
 from app.backend.database.models.user import User
+from app.backend.database.models.event import Event
 from app.backend.web import create_app
 from app.config import MIGRATION_DIR
 from flask import render_template
-from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 
 app = create_app(os.getenv('FLASK_CONFIG', 'default'))
 migrate = Migrate(app, db, directory=MIGRATION_DIR)
@@ -30,8 +31,18 @@ def make_shell_context():
 		Role=Role,
 		Pet=Pet,
 		PetStatus=PetStatus,
-		PetType=PetType
+		PetType=PetType,
+		Event=Event
 	)
+
+
+@app.template_filter('strftime')
+def _jinja2_filter_datetime(date, fmt=None):
+	date = parse(date)
+	native = date.replace(tzinfo=None)
+	format = '%Y-%m-%d'
+
+	return native.strftime(format)
 
 
 @app.errorhandler

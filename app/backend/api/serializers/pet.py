@@ -41,5 +41,6 @@ pet_post_serializer = api.model('PetPost', {
 	'name': pet_base_serializer['name'],
 	'color': pet_base_serializer['color'],
 	'breed': pet_base_serializer['breed'],
-	'info': pet_base_serializer['info']
+	'info': pet_base_serializer['info'],
+	'is_deleted': pet_base_serializer['is_deleted'],
 })

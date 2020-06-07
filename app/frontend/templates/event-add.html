@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ super() }}
+    - Event Add
+{% endblock %}
+
+{% block content %}
+    <form action="{{ url_for("event.add") }}" method="POST">
+        <div class="form-control">
+            <h1>Event Add</h1>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-3">
+                        <label for="name">Date occurrence</label>
+                        <input type="date" class="form-control" name="event_date" id="event_date">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg">
+                        <label for="info">Description</label>
+                        <textarea name="description" id="description" cols="120" rows="5"></textarea>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success">Save</button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </form>
+{% endblock %}

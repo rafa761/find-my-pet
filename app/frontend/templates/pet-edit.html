@@ -6,23 +6,24 @@
 {% endblock %}
 
 {% block content %}
-    <form action="{{ url_for("pet.pet_edit", pet_id=pet_dict.Pet.id) }}" method="POST">
+    <form action="{{ url_for("pet.edit", pet_id=pet_dict.id) }}" method="POST">
         <div class="form-control">
+        <h1>Pet Edit</h1>
 
             <div class="container">
                 <div class="row">
                     <div class="col-sm">
                         <label for="name">Name</label>
-                        <input type="text" class="form-control" name="name" id="name" value="{{ pet_dict.Pet.name }}">
+                        <input type="text" class="form-control" name="name" id="name" value="{{ pet_dict.name }}">
                     </div>
 
-                    <div class="col-sm">
+                    <div class="col-2">
                         <div class="form-group">
                             <label for="type_id">Type</label>
                             <select class="form-control" name="type_id" id="type_id">
                                 {% for pet_type_dict in pet_type_list %}
                                     <option value="{{ pet_type_dict.id }}"
-                                            {% if pet_type_dict.id == pet_dict.Pet.type_id %}
+                                            {% if pet_type_dict.id == pet_dict.type_id %}
                                             selected
                                             {% endif %}>
                                         {{ pet_type_dict.description }}
@@ -32,35 +33,33 @@
                         </div>
                     </div>
 
-                    <div class="col-sm">
+                    <div class="col-3">
                         <label for="color">Color</label>
                         <input type="text" class="form-control" name="color" id="color"
-                               value="{{ pet_dict.Pet.color }}">
+                               value="{{ pet_dict.color }}">
+                    </div>
+
+                    <div class="col-2">
+                        <label for="weight">Weight</label>
+                        <input type="number" class="form-control" name="weight" id="weight"
+                               value="{{ pet_dict.weight }}">
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-sm">
-                        <label for="weight">Weight</label>
-                        <input type="number" class="form-control" name="weight" id="weight"
-                               value="{{ pet_dict.Pet.weight }}">
-                    </div>
-
                     <div class="col-sm">
                         <label for="breed">Breed</label>
                         <input type="text" class="form-control" name="breed" id="breed"
-                               value="{{ pet_dict.Pet.breed }}">
+                               value="{{ pet_dict.breed }}">
                     </div>
-                </div>
 
-                <div class="row">
                     <div class="col-sm">
                         <div class="form-group">
                             <label for="status_id">Status</label>
                             <select class="form-control" name="status_id" id="status_id">
                                 {% for pet_status_dict in pet_status_list %}
                                     <option value="{{ pet_status_dict.id }}"
-                                            {% if pet_status_dict.id == pet_dict.Pet.status_id %}
+                                            {% if pet_status_dict.id == pet_dict.status_id %}
                                             selected
                                             {% endif %}>
                                         {{ pet_status_dict.description }}
@@ -74,7 +73,7 @@
                 <div class="row">
                     <div class="col-lg">
                         <label for="info">Extra Info</label>
-                        <textarea name="info" id="info" cols="120" rows="5">{{ pet_dict.Pet.info }}</textarea>
+                        <textarea name="info" id="info" cols="120" rows="5">{{ pet_dict.info }}</textarea>
                     </div>
                 </div>
 
@@ -83,7 +82,7 @@
                         <div class="form-group">
                             <button type="submit" class="btn btn-success">Save</button>
                             <button type="submit" class="btn btn-danger"
-                                    formaction="{{ url_for("pet.pet_delete", pet_id=pet_dict.Pet.id) }}">Delete
+                                    formaction="{{ url_for("pet.delete", pet_id=pet_dict.id) }}">Delete
                             </button>
                         </div>
                     </div>

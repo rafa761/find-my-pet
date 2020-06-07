@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ super() }}
+    - Event Edit
+{% endblock %}
+
+{% block content %}
+    <form action="{{ url_for("event.edit", event_id=event_dict.id) }}" method="POST">
+        <div class="form-control">
+        <h1>Event Edit</h1>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-3">
+                        <label for="name">Date occurrence</label>
+                        <input type="date" class="form-control" name="event_date" id="event_date"
+                               value="{{ event_dict.event_date|strftime }}">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg">
+                        <label for="info">Description</label>
+                        <textarea name="description" id="description" cols="120"
+                                  rows="5">{{ event_dict.description }}</textarea>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="pet_id">Pet / Status</label>
+                            <select class="form-control" name="pet_id" id="pet_id">
+                                <option value=""></option>
+                                {% for pet_dict in pet_list %}
+                                    <option value="{{ pet_dict.id }}"
+                                            {% if event_dict.pet_id == pet_dict.id %}
+                                            selected
+                                            {% endif %}>
+                                        {{ pet_dict.name }} / {{ pet_dict.status_description }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+                    <div class="col-lg">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success">Save</button>
+                            <button type="submit" class="btn btn-danger"
+                                    formaction="{{ url_for("event.delete", event_id=event_dict.id) }}">Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </form>
+{% endblock %}

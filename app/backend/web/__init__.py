@@ -36,7 +36,10 @@ def create_app(config_name=None):
 	# Frontend
 	from app.frontend.views import main_blueprint
 	from app.frontend.views import pet_blueprint
+	from app.frontend.views import event_blueprint
+
 	app.register_blueprint(main_blueprint)
 	app.register_blueprint(pet_blueprint)
+	app.register_blueprint(event_blueprint)
 
 	return app

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ super() }}
+    - Events Registry
+{% endblock %}
+
+{% block content %}
+    <h1>Events</h1>
+    <table class="table table-sm table-bordered table-striped table-hover text-center">
+        <thead>
+        <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Pet Name</th>
+            <th scope="col">Pet Status</th>
+            <th scope="col">Event Description</th>
+            {% if current_user.is_admin %}
+                <th scope="col">Deleted</th>
+                <th scope="col">Edit</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for event_dict in event_list %}
+            <tr {% if event_dict.pet_status_description == "lost" %} class="table-warning" {% endif %}
+                    {% if event_dict.pet_status_description == "adopted" %} class="table-success" {% endif %}>
+                <td>{{ event_dict.event_date }}</td>
+                <td>{{ event_dict.pet_name }}</td>
+                <td>{{ event_dict.pet_status_description }}</td>
+                <td>{{ event_dict.description }}</td>
+                {% if current_user.is_admin %}
+                    <td>{{ event_dict.is_deleted }}</td>
+                    <td>
+                        <button type="button" class="btn btn-outline-secondary btn-sm">
+                            <a href="{{ url_for("event.edit", event_id=event_dict.id) }}">Edit</a>
+                        </button>
+                    </td>
+                {% endif %}
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div>
+        <button type="button" class="btn btn-outline-success">
+            <a href="{{ url_for("event.add") }}">Add Event</a>
+        </button>
+    </div>
+
+{% endblock %}

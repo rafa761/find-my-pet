@@ -9,7 +9,6 @@ from app.backend.database.models.base import Base
 
 
 class Pet(db.Model, Base):
-	# Definition
 	__tablename__ = 'pet'
 	__table_args__ = {'extend_existing': True}
 
@@ -22,7 +21,7 @@ class Pet(db.Model, Base):
 	weight = db.Column(db.Float(precision=3))
 
 	# String
-	name = db.Column(db.String(60), index=True)
+	name = db.Column(db.String(60))
 	color = db.Column(db.String(30))  # TODO: create other table with colors
 	breed = db.Column(db.String(30))  # TODO: create other table with breeds ??
 
@@ -48,6 +47,14 @@ def on_changed_is_deleted(target, value, oldvalue, initiator):
 
 	target.date_deleted = None
 	# If is deleting
-	if oldvalue == False and value == True:
+	if oldvalue is False and value is True:
 		target.is_active = False
 		target.date_deleted = datetime.utcnow()
+
+
+@event.listens_for(Pet.info, 'set')
+def on_changed_info(target, value, oldvalue, initiator):
+
+	target.date_modified = None
+	if oldvalue != value:
+		target.date_modified = datetime.utcnow()
