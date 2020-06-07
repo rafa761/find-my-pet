@@ -5,7 +5,7 @@ Tool for find, register, report and rescue lost pets.
 
 Have you ever taught about how to help homeless or lost pets around the world, now you have the opportunity to help these little fluffy dogs, cats, etc to find a lovely owner.
 
-## Modules, Docs, Sources
+## Modules used and Docs
 
 ### Flask
 * [Flask](https://flask.palletsprojects.com/en/1.1.x/)
@@ -26,9 +26,24 @@ Maybe in the Future
 
 ##Development Info
 
-* The PostgreSQL database name is "**fmp**"
+* When using Docker container, the PostgreSQL database name is "**fmp**"
 
-## Environments Variables
+* If you are executing the project without Docker it will create a SQLite database with the name acordingly to the
+ environment
+    * Development: fmp-dev.sqlite
+    * Production: fmp.sqlite
+    * Testing: will use memory
+    
+## How to execute:
+Without Docker (recomended to new devs in the Project)
+    pip install requirements.txt
+    set the above variables
+    flask run
+    
+With Docker
+    docker-compose up -d
+
+### Environments Variables
 
 * FLASK_APP=pet.py
 * FLASK_ENV=development
