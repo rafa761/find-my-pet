@@ -48,13 +48,13 @@ def edit():
 		return render_template('error.html', message=str(error))
 
 
-# @event_blueprint('/delete', methods=('GET', 'POST',))
-# def delete():
-# 	try:
-# 		PetBus().delete(request.args.get('event_id'))
-# 		flash('Successfuly deleted Pet', category='message')
-# 		return redirect(url_for('pet.pets'))
-#
-# 	except Exception as error:
-# 		return render_template('error.html', message=str(error))
+@event_blueprint.route('/delete', methods=('GET', 'POST',))
+def delete():
+	try:
+		PetBus().delete(request.args.get('event_id'))
+		flash('Successfuly deleted Pet', category='message')
+		return redirect(url_for('pet.pets'))
+
+	except Exception as error:
+		return render_template('error.html', message=str(error))
 

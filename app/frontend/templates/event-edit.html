@@ -8,6 +8,7 @@
 {% block content %}
     <form action="{{ url_for("event.edit", event_id=event_dict.id) }}" method="POST">
         <div class="form-control">
+        <h1>Event Edit</h1>
 
             <div class="container">
                 <div class="row">
@@ -31,6 +32,7 @@
                         <div class="form-group">
                             <label for="pet_id">Pet / Status</label>
                             <select class="form-control" name="pet_id" id="pet_id">
+                                <option value=""></option>
                                 {% for pet_dict in pet_list %}
                                     <option value="{{ pet_dict.id }}"
                                             {% if event_dict.pet_id == pet_dict.id %}
@@ -50,9 +52,9 @@
                     <div class="col-lg">
                         <div class="form-group">
                             <button type="submit" class="btn btn-success">Save</button>
-{#                             <button type="submit" class="btn btn-danger"#}
-{#                                    formaction="{{ url_for("event.delete", event_id=event_dict.id) }}">Delete#}
-{#                            </button>#}
+                            <button type="submit" class="btn btn-danger"
+                                    formaction="{{ url_for("event.delete", event_id=event_dict.id) }}">Delete
+                            </button>
                         </div>
                     </div>
                 </div>
