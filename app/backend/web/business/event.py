@@ -73,9 +73,7 @@ class EventBus(object):
 
 		final_query = order_query.all()
 
-		result_list = []
-		for record in final_query:
-			result_list.append({
+		return [{
 				'id': record[0],
 				'description': record[1],
 				'is_deleted': record[2],
@@ -83,6 +81,4 @@ class EventBus(object):
 				'pet_id': record[4] or '',
 				'pet_name': record[5] or '',
 				'pet_status_description': record[6] or '',
-			})
-
-		return result_list
+			} for record in final_query]

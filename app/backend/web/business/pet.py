@@ -67,9 +67,7 @@ class PetBus(object):
 
 		final_query = order_query.all()
 
-		result_list = []
-		for record in final_query:
-			result_list.append({
+		return [{
 				'id': record[0],
 				'name': record[1],
 				'status_id': record[2],
@@ -83,6 +81,4 @@ class PetBus(object):
 				'is_deleted': record[10],
 				'status_description': record[11],
 				'type_description': record[12],
-			})
-
-		return result_list
+			} for record in final_query]
