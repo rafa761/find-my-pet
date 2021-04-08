@@ -16,5 +16,5 @@ class Email(fields.String):
 
 	def validate(self, value):
 		if not value:
-			return False if self.required else True
+			return not self.required
 		return bool(EMAIL_REGEX.match(value))
